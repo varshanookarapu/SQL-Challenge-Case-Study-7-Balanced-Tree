@@ -24,9 +24,16 @@ GROUP BY product_name;
 **Question 2:** What is the total generated revenue for all products before discounts?
 
 ```sql
+--for all products
 SELECT SUM(qty*price) as total_revenue_generated_before_discount FROM balanced_tree.sales ;
+
+--breakdown for each product
+SELECT product_name, SUM(qty*s.price) as total_revenue_generated_before_discount FROM balanced_tree.sales s LEFT JOIN 
+balanced_tree.product_details pd ON s.prod_id = pd.product_id
+GROUP BY product_name;
 ```
 <img width="357" height="86" alt="image" src="https://github.com/user-attachments/assets/f9ff80ab-1ae3-4e35-ad8b-09fa9fd06077" />
+<img width="1204" height="576" alt="image" src="https://github.com/user-attachments/assets/3fcc4d57-e33e-43fe-a735-a48aae73c0d0" />
 
 
 **Question 3:** What was the total discount amount for all products?
