@@ -39,6 +39,15 @@ GROUP BY product_name;
 **Question 3:** What was the total discount amount for all products?
 
 ```sql
+
+--for all products
 SELECT SUM(qty*price*discount/100)::NUMERIC as total_discount FROM balanced_tree.sales
+
+--for each product
+SELECT product_name, SUM((discount)*qty*s.price/100)::NUMERIC as total_discount
+FROM balanced_tree.sales s LEFT JOIN 
+balanced_tree.product_details pd ON s.prod_id = pd.product_id
+GROUP BY product_name;
 ```
 <img width="265" height="89" alt="image" src="https://github.com/user-attachments/assets/9786db69-c05e-47ea-8808-6bc0d992046e" />
+<img width="1550" height="586" alt="image" src="https://github.com/user-attachments/assets/cdf5e0e5-f922-421c-a827-1b49b39c7ef7" />
