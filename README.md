@@ -51,3 +51,32 @@ GROUP BY product_name;
 ```
 <img width="265" height="89" alt="image" src="https://github.com/user-attachments/assets/9786db69-c05e-47ea-8808-6bc0d992046e" />
 <img width="1550" height="586" alt="image" src="https://github.com/user-attachments/assets/cdf5e0e5-f922-421c-a827-1b49b39c7ef7" />
+
+
+---
+
+## Transaction Analysis
+
+How many unique transactions were there?
+
+```sql
+SELECT COUNT(DISTINCT txn_id) FROM balanced_tree.sales;
+```
+
+What is the average unique products purchased in each transaction?
+```sql
+-- formula avg = Sum of  all the unique products in each transaction / total number of  transactions
+WITH pc As
+(
+SELECT  txn_id, COUNT(DISTINCT prod_id) as product_count
+FROM balanced_tree.sales
+GROUP BY txn_id
+)
+
+SELECT ROUND(SUM(product_count)/(SELECT COUNT(DISTINCT txn_id) FROM balanced_tree.sales),2) as average_unique_products FROM pc
+
+```
+What are the 25th, 50th and 75th percentile values for the revenue per transaction?
+What is the average discount value per transaction?
+What is the percentage split of all transactions for members vs non-members?
+What is the average revenue for member transactions and non-member transactions?
