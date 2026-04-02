@@ -57,13 +57,13 @@ GROUP BY product_name;
 
 ## Transaction Analysis
 
-How many unique transactions were there?
+**Question 1:** How many unique transactions were there?
 
 ```sql
 SELECT COUNT(DISTINCT txn_id) FROM balanced_tree.sales;
 ```
-
-What is the average unique products purchased in each transaction?
+---
+**Question 2:** What is the average unique products purchased in each transaction?
 ```sql
 -- formula avg = Sum of  all the unique products in each transaction / total number of  transactions
 WITH pc As
@@ -76,7 +76,41 @@ GROUP BY txn_id
 SELECT ROUND(SUM(product_count)/(SELECT COUNT(DISTINCT txn_id) FROM balanced_tree.sales),2) as average_unique_products FROM pc
 
 ```
-What are the 25th, 50th and 75th percentile values for the revenue per transaction?
-What is the average discount value per transaction?
-What is the percentage split of all transactions for members vs non-members?
-What is the average revenue for member transactions and non-member transactions?
+---
+**Question 3:** What are the 25th, 50th and 75th percentile values for the revenue per transaction?
+
+```sql
+WITH txn_revenue AS
+(
+SELECT txn_id, SUM(price*qty) as revenue
+FROM balanced_tree.sales  
+GROUP BY txn_id
+)
+
+SELECT 
+percentile_cont(0.25) WITHIN GROUP(ORDER BY revenue) as percentile_25,
+percentile_cont(0.5) WITHIN GROUP(ORDER BY revenue) as percentile_50,
+percentile_cont(0.75) WITHIN GROUP(ORDER BY revenue) as percentile_75
+FROM txn_revenue
+```
+Percentiles tell you how values are distributed across your dataset
+Transactions below 375.75 → lower 25% (smallest revenues)
+Transactions between 375.75 and 509.5 → 25%–50% (moderate-low revenues)
+Transactions between 509.5 and 647 → 50%–75% (moderate-high revenues)
+Transactions above 647 → top 25% (highest revenues)
+
+<img width="1410" height="104" alt="image" src="https://github.com/user-attachments/assets/fcaeb3d1-078a-44c3-9ada-7b7f055f59ba" />
+
+---
+**Question 4:** What is the average discount value per transaction?
+```sql
+```
+---
+**Question 5:** What is the percentage split of all transactions for members vs non-members?
+```sql
+```
+---
+**Question 6:** What is the average revenue for member transactions and non-member transactions?
+```sql
+```
+---
