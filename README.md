@@ -154,3 +154,47 @@ from revenue
 <img width="1661" height="101" alt="image" src="https://github.com/user-attachments/assets/60dccd0b-59ca-4bf4-ac8b-e14e5f4778bd" />
 
 ---
+## Product Analysis
+
+**Question 1:** What are the top 3 products by total revenue before discount?
+```sql
+```
+---
+
+**Question 2:** What is the total quantity, revenue and discount for each segment?
+```sql
+```
+---
+**Question 3:** What is the top selling product for each segment?
+```sql
+```
+---
+**Question 4:** What is the total quantity, revenue and discount for each category?
+```sql
+```
+---
+**Question 5:** What is the top selling product for each category?
+```sql
+```
+---
+**Question 6:** What is the percentage split of revenue by product for each segment?
+```sql
+```
+---
+**Question 7:** What is the percentage split of revenue by segment for each category?
+```sql
+```
+---
+**Question 8:** What is the percentage split of total revenue by category?
+```sql
+```
+---
+**Question 9:** What is the total transaction “penetration” for each product? (hint: penetration = number of transactions where at least 1 quantity of a product was purchased divided by total number of transactions)
+```sql
+```
+---
+**Question 10:** What is the most common combination of at least 1 quantity of any 3 products in a 1 single transaction?
+
+```sql
+```
+---
