@@ -158,7 +158,18 @@ from revenue
 
 **Question 1:** What are the top 3 products by total revenue before discount?
 ```sql
+
+SELECT prod_id, product_name, SUM(qty*s.price) as total_revenue 
+FROM 
+balanced_tree.sales  s LEFT JOIN
+balanced_tree.product_details pd ON
+s.prod_id =pd.product_id
+GROUP BY prod_id,product_name
+ORDER BY total_revenue DESC
+LIMIT 3
 ```
+<img width="1441" height="217" alt="image" src="https://github.com/user-attachments/assets/b37335be-73e9-48e7-8eaf-31fa870cc176" />
+
 ---
 
 **Question 2:** What is the total quantity, revenue and discount for each segment?
