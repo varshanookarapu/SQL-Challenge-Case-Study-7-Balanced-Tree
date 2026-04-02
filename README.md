@@ -188,7 +188,23 @@ ORDER BY segment_id
 ---
 **Question 3:** What is the top selling product for each segment?
 ```sql
+-- I calculated the top selling product based on revenue , the question is ambigious , we an also calculate top selling product based on quantity
+WITH products AS(
+  
+SELECT segment_id, segment_name,product_name, SUM(qty*s.price) as total_revenue ,
+RANK() OVER(PARTITION BY segment_name ORDER BY SUM(qty*s.price) DESC) as rank
+FROM 
+balanced_tree.sales  s LEFT JOIN
+balanced_tree.product_details pd ON
+s.prod_id =pd.product_id
+GROUP BY segment_id,segment_name,product_name
+ORDER BY segment_id
+  )
+  
+SELECT segment_name,product_name,total_revenue FROM products WHERE rank =1
 ```
+<img width="1426" height="232" alt="image" src="https://github.com/user-attachments/assets/4b55a193-fd09-4bab-aa65-ae277ff19c77" />
+
 ---
 **Question 4:** What is the total quantity, revenue and discount for each category?
 ```sql
