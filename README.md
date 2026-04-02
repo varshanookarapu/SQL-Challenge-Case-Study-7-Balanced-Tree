@@ -174,7 +174,17 @@ LIMIT 3
 
 **Question 2:** What is the total quantity, revenue and discount for each segment?
 ```sql
+SELECT segment_id, segment_name, SUM(qty) as total_quantity, SUM(qty*s.price) as total_revenue ,
+SUM(qty*s.price*discount)/100 as total_discount
+FROM 
+balanced_tree.sales  s LEFT JOIN
+balanced_tree.product_details pd ON
+s.prod_id =pd.product_id
+GROUP BY segment_id,segment_name
+ORDER BY segment_id
 ```
+<img width="1520" height="258" alt="image" src="https://github.com/user-attachments/assets/335b569b-952b-43dd-a684-e854576c04e2" />
+
 ---
 **Question 3:** What is the top selling product for each segment?
 ```sql
