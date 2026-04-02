@@ -122,7 +122,19 @@ SELECT ROUND(AVG(discount_value)) as average_discount_value FROM discount
 ---
 **Question 5:** What is the percentage split of all transactions for members vs non-members?
 ```sql
+
+WITH members AS
+(
+SELECT  SUM(case WHEN member ='t' THEN 1 END) as members , SUM(case WHEN member ='f' THEN 1 END) as non_members , COUNT(txn_id) as total_txns 
+FROM balanced_tree.sales
+)
+
+
+SELECT members,non_members,total_txns,  ROUND((members::NUMERIC/total_txns::NUMERIC)*100,2) as members_percentage ,ROUND((non_members::NUMERIC/total_txns::NUMERIC)*100,2) as non_members_percentage
+FROM members
 ```
+<img width="1618" height="103" alt="image" src="https://github.com/user-attachments/assets/2236a4a2-4728-4c2b-b057-b20f63dd9cd7" />
+
 ---
 **Question 6:** What is the average revenue for member transactions and non-member transactions?
 ```sql
