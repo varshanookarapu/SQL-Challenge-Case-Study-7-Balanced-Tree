@@ -138,5 +138,19 @@ FROM members
 ---
 **Question 6:** What is the average revenue for member transactions and non-member transactions?
 ```sql
+WITH revenue AS
+(
+SELECT  SUM(CASE WHEN member ='t' THEN qty*price END) as total_members_revenue  ,SUM(CASE WHEN member ='f' THEN qty*price END) AS total_non_members_revenue , COUNT( DISTINCT CASE WHEN member ='t' THEN txn_id END) as member_txns_count,COUNT(DISTINCT CASE WHEN member ='f' THEN txn_id END) as non_member_txns_count
+FROM balanced_tree.sales
+)
+
+SELECT 
+total_members_revenue,total_non_members_revenue,member_txns_count,non_member_txns_count,
+ROUND((total_members_revenue/member_txns_count)::NUMERIC,2) as avg_members_revenue,
+ROUND((total_non_members_revenue/non_member_txns_count)::NUMERIC,2) as avg_non_members_revenue
+from revenue
+
 ```
+<img width="1661" height="101" alt="image" src="https://github.com/user-attachments/assets/60dccd0b-59ca-4bf4-ac8b-e14e5f4778bd" />
+
 ---
