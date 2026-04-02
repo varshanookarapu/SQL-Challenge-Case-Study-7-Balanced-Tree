@@ -242,6 +242,24 @@ SELECT category_name,product_name,total_revenue FROM products WHERE rank =1
 ---
 **Question 6:** What is the percentage split of revenue by product for each segment?
 ```sql
+
+WITH revenue AS
+(
+SELECT  segment_name,product_name,
+SUM(qty*s.price) as product_revenue
+FROM 
+balanced_tree.sales  s LEFT JOIN
+balanced_tree.product_details pd ON
+s.prod_id =pd.product_id
+GROUP BY segment_name,product_name
+)
+
+SELECT segment_name, product_name, product_revenue,
+ROUND((product_revenue/
+SUM(product_revenue) OVER(PARTITION BY segment_name))::NUMERIC*100,2) as revenue_percentage_split
+FROM revenue
+ORDER BY segment_name
+
 ```
 ---
 **Question 7:** What is the percentage split of revenue by segment for each category?
