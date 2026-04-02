@@ -208,11 +208,37 @@ SELECT segment_name,product_name,total_revenue FROM products WHERE rank =1
 ---
 **Question 4:** What is the total quantity, revenue and discount for each category?
 ```sql
+SELECT category_name, SUM(qty) as total_quantity, SUM(qty*s.price) as total_revenue ,
+SUM(qty*s.price*discount)/100 as total_discount
+FROM 
+balanced_tree.sales  s LEFT JOIN
+balanced_tree.product_details pd ON
+s.prod_id =pd.product_id
+GROUP BY category_name
+ORDER BY category_name
 ```
+<img width="1509" height="153" alt="image" src="https://github.com/user-attachments/assets/99d11c2e-b9c9-46b7-9df6-cbf8edd5cc2f" />
+
 ---
 **Question 5:** What is the top selling product for each category?
 ```sql
+-- I calculated the top selling product based on revenue , the question is ambigious , we an also calculate top selling product based on quantity
+WITH products AS(
+  
+SELECT category_name,product_name, SUM(qty*s.price) as total_revenue ,
+RANK() OVER(PARTITION BY category_name ORDER BY SUM(qty*s.price) DESC) as rank
+FROM 
+balanced_tree.sales  s LEFT JOIN
+balanced_tree.product_details pd ON
+s.prod_id =pd.product_id
+GROUP BY category_name,product_name
+ORDER BY category_name
+  )
+  
+SELECT category_name,product_name,total_revenue FROM products WHERE rank =1
 ```
+<img width="1563" height="194" alt="image" src="https://github.com/user-attachments/assets/6409d4d1-8e47-47b8-a8ba-f47462facff4" />
+
 ---
 **Question 6:** What is the percentage split of revenue by product for each segment?
 ```sql
