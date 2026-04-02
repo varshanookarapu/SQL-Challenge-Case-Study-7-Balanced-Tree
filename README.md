@@ -60,8 +60,10 @@ GROUP BY product_name;
 **Question 1:** How many unique transactions were there?
 
 ```sql
-SELECT COUNT(DISTINCT txn_id) FROM balanced_tree.sales;
+SELECT COUNT(DISTINCT txn_id) as unique_transactions_count FROM balanced_tree.sales;
 ```
+<img width="390" height="100" alt="image" src="https://github.com/user-attachments/assets/327a8412-0a6a-4e1a-b0a2-429ae8e825b7" />
+
 ---
 **Question 2:** What is the average unique products purchased in each transaction?
 ```sql
@@ -76,6 +78,8 @@ GROUP BY txn_id
 SELECT ROUND(SUM(product_count)/(SELECT COUNT(DISTINCT txn_id) FROM balanced_tree.sales),2) as average_unique_products FROM pc
 
 ```
+<img width="383" height="103" alt="image" src="https://github.com/user-attachments/assets/08503981-efc2-4fc4-8707-cd3b6fba1848" />
+
 ---
 **Question 3:** What are the 25th, 50th and 75th percentile values for the revenue per transaction?
 
