@@ -250,7 +250,21 @@ SELECT category_name,product_name,total_revenue FROM products WHERE rank =1
 ---
 **Question 8:** What is the percentage split of total revenue by category?
 ```sql
+WITH revenue AS
+(
+SELECT  SUM(CASE WHEN category_name = 'Mens' THEN (qty*s.price) END) as  mens_total_revenue ,
+SUM(CASE WHEN category_name = 'Womens' THEN (qty*s.price) END) as  womens_total_revenue ,
+SUM(qty*s.price) as total_revenue
+FROM 
+balanced_tree.sales  s LEFT JOIN
+balanced_tree.product_details pd ON
+s.prod_id =pd.product_id
+)
+
+SELECT  ROUND((mens_total_revenue::NUMERIC/total_revenue::NUMERIC)*100,2) AS mens_revenue_percentage,ROUND((womens_total_revenue::NUMERIC/total_revenue::NUMERIC)*100,2) AS womens_revenue_percentage FROM revenue
 ```
+<img width="1377" height="96" alt="image" src="https://github.com/user-attachments/assets/d9af774a-b4fc-40a4-b8b6-befb2b604b7a" />
+
 ---
 **Question 9:** What is the total transaction “penetration” for each product? (hint: penetration = number of transactions where at least 1 quantity of a product was purchased divided by total number of transactions)
 ```sql
