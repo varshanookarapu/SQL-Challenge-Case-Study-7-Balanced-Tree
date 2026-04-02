@@ -108,7 +108,17 @@ Transactions above 647 → top 25% (highest revenues)
 ---
 **Question 4:** What is the average discount value per transaction?
 ```sql
+WITH discount As
+(
+SELECT  txn_id, SUM(qty*price*discount/100) as discount_value
+FROM balanced_tree.sales
+GROUP BY txn_id
+)
+
+SELECT ROUND(AVG(discount_value)) as average_discount_value FROM discount
 ```
+<img width="476" height="96" alt="image" src="https://github.com/user-attachments/assets/7154147d-ed97-419b-a235-995927a934e5" />
+
 ---
 **Question 5:** What is the percentage split of all transactions for members vs non-members?
 ```sql
