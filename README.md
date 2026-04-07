@@ -266,7 +266,23 @@ ORDER BY segment_name
 ---
 **Question 7:** What is the percentage split of revenue by segment for each category?
 ```sql
+WITH revenue AS
+(
+SELECT category_name, segment_name,
+SUM(qty*s.price) as product_revenue
+FROM 
+balanced_tree.sales  s LEFT JOIN
+balanced_tree.product_details pd ON
+s.prod_id =pd.product_id
+GROUP BY segment_name,category_name
+)
+
+SELECT category_name,segment_name, product_revenue,
+ROUND((product_revenue/
+SUM(product_revenue) OVER(PARTITION BY category_name))::NUMERIC*100,2) as revenue_percentage_split
 ```
+<img width="1485" height="270" alt="image" src="https://github.com/user-attachments/assets/6ecaa734-402b-4c0e-b036-be68518489ff" />
+
 ---
 **Question 8:** What is the percentage split of total revenue by category?
 ```sql
