@@ -261,6 +261,8 @@ FROM revenue
 ORDER BY segment_name
 
 ```
+<img width="1825" height="643" alt="image" src="https://github.com/user-attachments/assets/ed9b2ee3-dfdb-4d9d-b764-3f7688286476" />
+
 ---
 **Question 7:** What is the percentage split of revenue by segment for each category?
 ```sql
