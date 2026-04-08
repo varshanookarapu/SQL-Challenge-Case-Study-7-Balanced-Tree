@@ -304,7 +304,26 @@ SELECT  ROUND((mens_total_revenue::NUMERIC/total_revenue::NUMERIC)*100,2) AS men
 ---
 **Question 9:** What is the total transaction “penetration” for each product? (hint: penetration = number of transactions where at least 1 quantity of a product was purchased divided by total number of transactions)
 ```sql
+-- Penetration tells you how popular a product is across all transactions, not how much of it is sold. It’s about presence, not quantity.
+WITH product_txn AS
+(
+SELECT  prod_id,product_name,COUNT(DISTINCT CASE WHEN qty>=1 THEN txn_id END) as txn_count_qty_greaterthanequaltoone,
+(SELECT COUNT(DISTINCT txn_id) FROM balanced_tree.sales s ) as total_transactions
+FROM balanced_tree.sales s 
+LEFT JOIN balanced_tree.product_details pd
+ON s.prod_id = pd.product_id
+GROUP BY prod_id,product_name
+)
+
+
+SELECT prod_id,product_name, ROUND(100*(txn_count_qty_greaterthanequaltoone:: NUMERIC  /total_transactions :: NUMERIC ),2) as penetration  FROM product_txn
+ORDER BY penetration DESC
+
 ```
+From this we can see that Navy solid socks - mens has the highest penetration. i.e Out of all the transactions in the dataset, this product appears in more transactions than any other product.
+i.e more than half of the transactions include at least one pair of Navy Solid Socks - Mens
+<img width="1901" height="625" alt="image" src="https://github.com/user-attachments/assets/aeb68fb5-5945-4840-ae49-e1d81bba9e40" />
+
 ---
 **Question 10:** What is the most common combination of at least 1 quantity of any 3 products in a 1 single transaction?
 
