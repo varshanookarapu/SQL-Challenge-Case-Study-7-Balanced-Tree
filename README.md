@@ -328,5 +328,40 @@ i.e more than half of the transactions include at least one pair of Navy Solid S
 **Question 10:** What is the most common combination of at least 1 quantity of any 3 products in a 1 single transaction?
 
 ```sql
+
+WITH product_combinations AS (
+    SELECT 
+        s1.txn_id,
+        s1.prod_id AS p1,
+        s2.prod_id AS p2,
+        s3.prod_id AS p3
+    FROM balanced_tree.sales s1
+    JOIN balanced_tree.sales s2 
+        ON s1.txn_id = s2.txn_id 
+        AND s1.prod_id < s2.prod_id   -- ensures unique pairs (lexicographic order)
+    JOIN balanced_tree.sales s3
+        ON s2.txn_id = s3.txn_id 
+        AND s2.prod_id < s3.prod_id   -- ensures unique 3-product combination
+    LEFT JOIN balanced_tree.product_details pd
+        ON s1.prod_id = pd.product_id
+)
+
+SELECT 
+    p1, p2, p3, 
+    COUNT(*) AS common_product_combinations_count
+FROM product_combinations
+GROUP BY p1, p2, p3
+ORDER BY common_product_combinations_count DESC
 ```
 ---
+
+Used self-join the sales table three times (s1, s2, s3) to form all possible 3-product combinations in each transaction.
+The < operator ensures
+No duplicates (e.g., (A,B,C) only appears once, not (B,A,C) etc.)
+No self-pairs (e.g., (A,A,B) (A,A,A) etc combinations)
+
+so the product combination below is the most common one
+p1	     p2	     p3	    common_product_combinations_count
+5d267b	9ec847	c8d436	352
+<img width="1305" height="717" alt="image" src="https://github.com/user-attachments/assets/7ea567d8-5fe8-4aa2-a416-142726ccb45e" />
+
