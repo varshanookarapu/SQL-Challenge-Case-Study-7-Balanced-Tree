@@ -354,14 +354,14 @@ GROUP BY p1, p2, p3
 ORDER BY common_product_combinations_count DESC
 ```
 ---
-
-Used self-join the sales table three times (s1, s2, s3) to form all possible 3-product combinations in each transaction.
+This was a bit tricky question to handle , I did go through a lot of peoples github solutions but I found this algorithm to be the most simplest. 
+Used self-join on the sales table three times (s1, s2, s3) to form all possible 3-product combinations in each transaction. Then counted all the combinations and filtered the combination which has the higest count
 The < operator ensures
-No duplicates (e.g., (A,B,C) only appears once, not (B,A,C) etc.)
-No self-pairs (e.g., (A,A,B) (A,A,A) etc combinations)
+theres No duplicates (e.g., (A,B,C) only appears once, not (B,A,C) etc.)
+and No self-pairs (e.g., (A,A,B) (A,A,A) etc combinations)
 
 so the product combination below is the most common one
-p1	     p2	     p3	    common_product_combinations_count
-5d267b	9ec847	c8d436	352
+
+5d267b	;9ec847;	c8d436	- 352
 <img width="1305" height="717" alt="image" src="https://github.com/user-attachments/assets/7ea567d8-5fe8-4aa2-a416-142726ccb45e" />
 
