@@ -326,7 +326,7 @@ i.e more than half of the transactions include at least one pair of Navy Solid S
 
 ---
 **Question 10:** What is the most common combination of at least 1 quantity of any 3 products in a 1 single transaction?
-
+-- Note to self Whenever you see combinations the first approach is to think about self joins, because that is where we can find every possible combination 
 ```sql
 
 WITH product_combinations AS (
