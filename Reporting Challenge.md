@@ -7,3 +7,27 @@ Imagine that the Chief Financial Officer (which is also Danny) has asked for all
 He first wants you to generate the data for January only - but then he also wants you to demonstrate that you can easily run the samne analysis for February without many changes (if at all).
 
 Feel free to split up your final outputs into as many tables as you need - but be sure to explicitly reference which table outputs relate to which question for full marks :)
+
+
+
+----
+
+To answer the reporting challenge first I will segregate the above questions to the following categories 
+
+**Segment Summary **
+What is the total quantity, revenue and discount for each segment?
+What is the top selling product for each segment?
+What is the percentage split of revenue by product for each segment?
+
+**Category Summary**
+What is the total quantity, revenue and discount for each category?
+What is the top selling product for each category?
+What is the percentage split of revenue by segment for each category?
+What is the percentage split of total revenue by category?
+
+**Product Summary**
+What are the top 3 products by total revenue before discount?
+
+My idea is to create three CTEs then filter the data for january month gather the insights , then proceed to check for other months , the minimal change that I would be making is just updating the month number and we generate the insights from the CTES. 
+
+
