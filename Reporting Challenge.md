@@ -63,7 +63,7 @@ SELECT *,
 ROUND(total_revenue/SUM(total_revenue) OVER(PARTITION BY segment_name)::NUMERIC*100,2) as revenue_percentage_split ,
 RANK() OVER(PARTITION BY segment_name,month ORDER BY total_revenue DESC) as rank FROM segment_summary 
 WHERE month=1
--- Change the month number to get the insights for other months.
+-- Change the month number to get the insights for other months. its not ideal as if there's more years it combines results for all the years , need to udpate the where clause condition.
 ORDER BY segment_id,month
 
 
