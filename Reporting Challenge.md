@@ -57,7 +57,13 @@ WHERE month=1  -- Change the month number to get the insights for other months.
 ORDER BY segment_id,month
 
 ```
-Above CTE gives us insights on  total_quantity ,total revenue , total_discount as well as the revenue percentage and the rank for every product under each segment, you can easily get the insights for other months by simply changing the month number in the WHERE clause of the SQL query to get details for subsequents months like February and March.
+Above CTE gives us insights on 
+--total_quantity 
+--total revenue 
+--total_discount 
+--revenue percentage 
+--rank 
+of every product under each segment, you can easily get the insights for other months by simply changing the month number in the WHERE clause of the SQL query to get details for subsequents months like February and March.
 
 <img width="1905" height="627" alt="image" src="https://github.com/user-attachments/assets/40a4856e-178c-4760-a0d9-c509b4e521ba" />
 
