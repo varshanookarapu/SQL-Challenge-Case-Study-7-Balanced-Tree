@@ -39,21 +39,30 @@ WITH segment_summary AS
 
 (
 
-SELECT segment_id, segment_name,product_name, EXTRACT('month' FROM start_txn_time) as month, TO_CHAR(start_txn_time,'Month') as month_name,  
-SUM(qty) as total_quantity, SUM(qty*s.price) as total_revenue ,SUM(qty*s.price*discount*0.10) as total_discount,
- ROUND(((SUM(qty*s.price))/
-SUM((SUM(qty*s.price))) OVER(PARTITION BY segment_name))::NUMERIC*100,2) as revenue_percentage_split 
+WITH segment_summary AS
+(
+SELECT 
+  
+  segment_id, 
+  segment_name,
+  product_name, 
+  EXTRACT('month' FROM start_txn_time) as month, 
+  TO_CHAR(start_txn_time,'Month') as month_name,  
+  SUM(qty) as total_quantity, SUM(qty*s.price) as total_revenue ,
+  SUM(qty*s.price*discount*0.10) as total_discount,
+  ROUND(((SUM(qty*s.price))/SUM((SUM(qty*s.price))) OVER(PARTITION BY segment_name))::NUMERIC*100,2) as revenue_percentage_split 
+
 FROM
 balanced_tree.sales  s LEFT JOIN
 balanced_tree.product_details pd ON
 s.prod_id =pd.product_id
 GROUP BY segment_id,segment_name,product_name,month, month_name
 
-
 )
 
 SELECT *,RANK() OVER(PARTITION BY segment_name,month ORDER BY total_revenue DESC) as rank FROM segment_summary 
-WHERE month=1  -- Change the month number to get the insights for other months.
+WHERE month=1
+-- Change the month number to get the insights for other months.
 ORDER BY segment_id,month
 
 ```
