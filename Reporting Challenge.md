@@ -39,8 +39,6 @@ WITH segment_summary AS
 
 (
 
-WITH segment_summary AS
-(
 SELECT 
   
   segment_id, 
@@ -48,9 +46,9 @@ SELECT
   product_name, 
   EXTRACT('month' FROM start_txn_time) as month, 
   TO_CHAR(start_txn_time,'Month') as month_name,  
-  SUM(qty) as total_quantity, SUM(qty*s.price) as total_revenue ,
-  SUM(qty*s.price*discount/100) as total_discount,
-  ROUND(((SUM(qty*s.price))/SUM((SUM(qty*s.price))) OVER(PARTITION BY segment_name))::NUMERIC*100,2) as revenue_percentage_split 
+  SUM(qty) as total_quantity, 
+  SUM(qty*s.price) as total_revenue ,
+  SUM(qty*s.price*discount/100) as total_discount
 
 FROM
 balanced_tree.sales  s LEFT JOIN
@@ -58,12 +56,17 @@ balanced_tree.product_details pd ON
 s.prod_id =pd.product_id
 GROUP BY segment_id,segment_name,product_name,month, month_name
 
+
 )
 
-SELECT *,RANK() OVER(PARTITION BY segment_name,month ORDER BY total_revenue DESC) as rank FROM segment_summary 
+SELECT *,
+ROUND(total_revenue/SUM(total_revenue) OVER(PARTITION BY segment_name)::NUMERIC*100,2) as revenue_percentage_split ,
+RANK() OVER(PARTITION BY segment_name,month ORDER BY total_revenue DESC) as rank FROM segment_summary 
 WHERE month=1
 -- Change the month number to get the insights for other months.
 ORDER BY segment_id,month
+
+
 
 ```
 Above CTE gives us insights on 
@@ -74,5 +77,6 @@ Above CTE gives us insights on
 --rank 
 of every product under each segment, you can easily get the insights for other months by simply changing the month number in the WHERE clause of the SQL query to get details for subsequents months like February and March.
 
-<img width="1905" height="627" alt="image" src="https://github.com/user-attachments/assets/40a4856e-178c-4760-a0d9-c509b4e521ba" />
+<img width="1914" height="680" alt="image" src="https://github.com/user-attachments/assets/86b9f724-d680-4b6e-bff8-41970e7a663f" />
+
 
