@@ -49,7 +49,7 @@ SELECT
   EXTRACT('month' FROM start_txn_time) as month, 
   TO_CHAR(start_txn_time,'Month') as month_name,  
   SUM(qty) as total_quantity, SUM(qty*s.price) as total_revenue ,
-  SUM(qty*s.price*discount*0.10) as total_discount,
+  SUM(qty*s.price*discount/100) as total_discount,
   ROUND(((SUM(qty*s.price))/SUM((SUM(qty*s.price))) OVER(PARTITION BY segment_name))::NUMERIC*100,2) as revenue_percentage_split 
 
 FROM
