@@ -79,4 +79,9 @@ of every product under each segment, you can easily get the insights for other m
 
 <img width="1914" height="680" alt="image" src="https://github.com/user-attachments/assets/86b9f724-d680-4b6e-bff8-41970e7a663f" />
 
+---
+## Category Analysis
 
+---
+
+## Product Analysis
